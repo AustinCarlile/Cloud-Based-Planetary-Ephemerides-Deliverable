@@ -105,7 +105,7 @@ async def get_isd(request: Request):
         label_file.write(label_string)
     
     # set spiceinit variable
-    spiceinit_cmd = f'spiceinit from={temp_file}'
+    spiceinit_cmd = f'spiceinit from={temp_file} web=true'
     os.system (spiceinit_cmd)
     
     # create a mini label and hash from label file
