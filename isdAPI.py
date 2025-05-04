@@ -12,22 +12,33 @@ import sys
 
 app = FastAPI()
 
-# Create DynamoDB resource
-dynamodb = boto3.resource('dynamodb', region_name='us-west-2', endpoint_url='http://localhost:8000')
+# set AWS access parameters from environmental variables
+aws_access_key_id = os.environ.get('AWS_ACCESS_KEY_ID')
+aws_secret_access_key = os.environ.get('AWS_SECRET_ACCESS_KEY')
+region_name = os.environ.get('AWS_REGION', 'us-east-2')  # Default to 'us-east-2' if not set
 
-# Create ISD table if it does not exist already
-try:
-    response = dynamodb.create_table(
-        TableName='ISD',
-        KeySchema=[{'AttributeName': 'id', 'KeyType': 'HASH'}],
-        AttributeDefinitions=[{'AttributeName': 'id', 'AttributeType': 'S'}],
-        ProvisionedThroughput={'ReadCapacityUnits': 5, 'WriteCapacityUnits': 5}
-    )
-except: # if it does exist, skip
-    pass
+# Initialize DynamoDB client
+client = boto3.client(
+    'dynamodb',
+    aws_access_key_id=aws_access_key_id,
+    aws_secret_access_key=aws_secret_access_key,
+    region_name=region_name
+)
 
-# Variable to access ISD table
-table = dynamodb.Table('ISD')
+# Initialize DynamoDB client
+dynamodb = boto3.resource(
+    'dynamodb',
+    aws_access_key_id = aws_access_key_id,
+    aws_secret_access_key = aws_secret_access_key,
+    region_name=region_name
+)
+
+# Get DynamoDB table name from client
+response = client.list_tables()
+table_name = response['TableNames'][0]
+
+# Reference the DynamoDB table
+table = dynamodb.Table(table_name)
 
 # Pydantic model for item input validation
 class Item(BaseModel):
@@ -105,7 +116,7 @@ async def get_isd(request: Request):
         label_file.write(label_string)
     
     # set spiceinit variable
-    spiceinit_cmd = f'spiceinit from={temp_file} web=true'
+    spiceinit_cmd = f'spiceinit from={temp_file}'
     os.system (spiceinit_cmd)
     
     # create a mini label and hash from label file
@@ -114,7 +125,6 @@ async def get_isd(request: Request):
     
     # check if isd exists by searching database with hash
     serverResponse = table.get_item(
-            TableName='ISD',
             Key = {
                 'id': isd_hash
             }
@@ -132,7 +142,6 @@ async def get_isd(request: Request):
             
         # sends item with hash id and isd value to table, then saves response
         table.put_item(
-            TableName='ISD',
             Item = {
                 'id': isd_hash,
                 'isd': isd_dict
@@ -141,7 +150,6 @@ async def get_isd(request: Request):
 
         # get isd back from server
         serverResponse = table.get_item(
-            TableName='ISD',
             Key = {
                 'id': isd_hash
             }
@@ -168,4 +176,4 @@ async def get_isd(request: Request):
     # send isd back to client
     return Response(content = output_compress, media_type = "application/octet-stream")
 
-# Run the app with: uvicorn isdAPI:app --port=8080 --reload
+# Run the app with: uvicorn isdAPI:app --reload
