@@ -1,0 +1,86 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: isdservice
+Resources:
+  WebServiceTaskDefinition:
+    Type: 'AWS::ECS::TaskDefinition'
+    Properties:
+      RequiresCompatibilities:
+        - EC2
+      ExecutionRoleArn: 'arn:aws:iam::582489738755:role/TaskExecutionRole'
+      Cpu: 4096
+      Memory: 8192
+      NetworkMode: awsvpc
+      ContainerDefinitions:
+        - Name: webservice_container
+          Image: acarlile0697/isdwebservice:latest
+          PortMappings:
+            - ContainerPort: 80
+          Environment:
+            - Name: SPICEROOT
+              Value: /mnt/isis_data
+            - Name: SPICEQL_LOG_LEVEL
+              Value: DEBUG
+            - Name: SSPICE_DEBUG
+              Value: TRUE
+  WebServiceCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: WebServiceCluster
+  WebServiceSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      VpcId: vpc-0e788e7d2a69d8709
+      GroupDescription: SG for the Fargate ALB
+      GroupName: webservice-LBSG
+      SecurityGroupIngress:
+        - CidrIpv6: '::/0'
+          FromPort: 80
+          ToPort: 443
+          IpProtocol: TCP
+          Description: Inbound rule for IPv6 traffic
+        - CidrIp: 0.0.0.0/0
+          FromPort: 80
+          ToPort: 443
+          IpProtocol: TCP
+          Description: Inbound rule for IPv4 traffic
+  ContainerSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupName: container_sg
+      GroupDescription: Security group for NGINX container
+      VpcId: vpc-0e788e7d2a69d8709
+      SecurityGroupIngress:
+        - IpProtocol: -1
+          SourceSecurityGroupId: !GetAtt WebServiceSecurityGroup.GroupId
+          Description: Inbound rule for all traffic
+  WebService:
+    Type: 'AWS::ECS::Service'
+    Properties:
+      LaunchType: FARGATE
+      Cluster:
+        Ref: WebServiceCluster
+      DesiredCount: 1
+      TaskDefinition:
+        Ref: WebServiceTaskDefinition
+      DeploymentConfiguration:
+        MaximumPercent: 100
+        MinimumHealthyPercent: 0
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+            - !GetAtt ContainerSecurityGroup.GroupId
+          Subnets:
+            - subnet-0ec27bbcaf26e268e
+  DynamoDB:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions: 
+        - AttributeName: "id"
+          AttributeType: "S"
+      KeySchema: 
+        - AttributeName: "id"
+          KeyType: "HASH"
+      ProvisionedThroughput:
+        ReadCapacityUnits: 15
+        WriteCapacityUnits: 15
