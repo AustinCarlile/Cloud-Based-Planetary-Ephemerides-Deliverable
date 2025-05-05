@@ -6,7 +6,7 @@
 
 [Web Service Setup](#to-set-up-the-web-service)
 
-[Configuration and Daily Operation](##configuration-and-daily-operation)
+[Configuration and Daily Operation](#configuration-and-daily-operation)
 
 [Maintenance](#maintenance)
 
@@ -122,6 +122,15 @@ If you want to to dynamically get AWS credentials, you can use AWS STS:
 [STS Documentation](https://botocore.amazonaws.com/v1/documentation/api/latest/reference/services/sts.html)
 
 
+The Web Service expects a Brotli compressed byte stream of a label file and will return a Brotli compressed byte stream of an ISD. 
+
+Any client that interacts with the Web Service will need be able to send and receive Brotli compressed byte streams.
+
+A [Test Client](webservice/tests/test_client.py) can be found in the webservice/tests directory of the GitHub Repository, along with a [README](webservice/tests/README.txt) on how to use it. 
+
+This Test Client can be used to test and debug the Web Service, as well as a reference for creating or adapting any other clients.
+
+
 Configuration for end-user:
 
 * Interact programmatically with the REST API to access endpoints
@@ -139,6 +148,8 @@ Workflow for end-user:
 The Web Service automatically generates a print.prt log file that chronicles all ISD generation actions that have taken place. Periodically, the user may want to erase or delete this file to prevent its size from growing too large.
 
 The Web Service will also automatically create a “temp.json” file when generating an ISD, this is overwritten each time and will not grow in size. The user may want to automatically remove this file if they do not want to have it in memory at all times.
+
+The isd_generate function inside the Web Service uses the “-v” verbose flag, which will print all ISD generation operations to the Web Services’ console. If you would like to keep the Web Service as lightweight as possible, consider removing this flag.
 
 
 ## Troubleshooting
@@ -175,3 +186,12 @@ downloadIsisData viking1 $ISISDATA
 downloadIsisData all $ISISDATA
 ```
 _NOTE: A segmentation fault will happen if you add “web=true” to the spiceinit command in isdAPI.py_
+
+Brotli decompress failure:
+
+* Check whether this error is coming from the Web Service or the client.
+
+* If from the Web Service, the client is likely sending an incorrect byte stream.
+
+* If from the Client, the Web Service is likely returning a non-ISD HTTP response, which will not be Brotli compressed. This is either due to an ISD generation failure or an incorrect cache retrieval or sending of an ISD.
+
