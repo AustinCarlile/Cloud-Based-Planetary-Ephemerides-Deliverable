@@ -73,7 +73,6 @@ https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage-attach-d
 
 https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonDynamoDBFullAccess.html
 <br></br>
-<br></br>
 5. Deploy DynamoDB CloudFormation stack using:
 
 https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-create-stack.html
