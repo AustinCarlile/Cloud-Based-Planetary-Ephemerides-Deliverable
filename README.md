@@ -17,14 +17,10 @@
 ### To set up the necessary environment for operation of the Web Service:
 
 
-1. Install Miniforge, instructions can be found out:
-
-https://github.com/conda-forge/miniforge
+1. [Install Miniforge](https://github.com/conda-forge/miniforge)
 
 
-2. Install ISIS and set environment variables, instructions can be found out:
-
-https://astrogeology.usgs.gov/docs/how-to-guides/environment-setup-and-maintenance/installing-isis-via-anaconda/
+2. [Install ISIS](https://astrogeology.usgs.gov/docs/how-to-guides/environment-setup-and-maintenance/installing-isis-via-anaconda/) and set environment variables:
 
 _NOTE: Make sure to install ISIS data for any missions you are using label files from._
 
@@ -46,26 +42,23 @@ sudo apt install git && git clone https://github.com/AustinCarlile/Cloud-Based-P
 
 4. Install Python-pip and necessary dependencies:
 ```
-conda install fastapi && conda install boto3 && conda install brotli && conda install pvl && conda install uvicorn && pip install mkl && conda install requests
+conda install fastapi && \
+conda install boto3 && \
+conda install brotli && \
+conda install pvl && \
+conda install uvicorn && \
+pip install mkl && \
+conda install requests
 ```
 
 
 ### To set up your Amazon AWS account for deploying the DynamoDB instance:
 
-1. Set up a AWS Account:
+1. [Set up an AWS Account](https://docs.aws.amazon.com/accounts/latest/reference/manage-acct-creating.html):
 
-https://docs.aws.amazon.com/accounts/latest/reference/manage-acct-creating.html
+2. [Set up an IAM User account](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html)
 
-
-2. Set up an IAM User account:
-
-https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html
-
-
-3. Create IAM User Access Key:
-
-https://docs.aws.amazon.com/keyspaces/latest/devguide/create.keypair.html
-
+3. [Create IAM User Access Key](https://docs.aws.amazon.com/keyspaces/latest/devguide/create.keypair.html)
 
 4. Give IAM User AmazonDynamoDBFullAccess permissions:
 
@@ -74,9 +67,7 @@ https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage-attach-d
 https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonDynamoDBFullAccess.html
 
 
-5. Deploy DynamoDB CloudFormation stack using:
-
-https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-create-stack.html
+5. [Deploy DynamoDB CloudFormation stack](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-create-stack.html)
 
 The [DynamoDB CloudFormation file](cloudformation/dynamo.yml) is found in the cloudformation directory of the GitHub repository.
 
