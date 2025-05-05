@@ -20,9 +20,15 @@
 1. [Install Miniforge](https://github.com/conda-forge/miniforge)
 
 
-2. [Install ISIS](https://astrogeology.usgs.gov/docs/how-to-guides/environment-setup-and-maintenance/installing-isis-via-anaconda/) and set environment variables:
+2. [Install ISIS](https://astrogeology.usgs.gov/docs/how-to-guides/environment-setup-and-maintenance/installing-isis-via-anaconda/)
+   
+_NOTE: Make sure to install base ISIS data._
 
-_NOTE: Make sure to install ISIS data for any missions you are using label files from._
+```
+downloadIsisData base $ISISDATA
+```
+
+_NOTE: Make sure to also install ISIS data for any missions you are using label files from._
 
 For example, if you are going to use viking1 label files, run: 
 ```
@@ -174,6 +180,11 @@ Error deploying CloudFormation file:
 * Check the error given during the CloudFormation deployment in the AWS console. Make sure that the user has permissions required.
 
 Web Service Segmentation fault:
+
+* Make sure that you have downloaded the base ISIS data:
+```
+downloadIsisData base $ISISDATA
+```
   
 * Make sure that you have downloaded the mission data for any mission label file you send the Web Service.
   
