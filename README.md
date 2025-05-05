@@ -122,6 +122,15 @@ If you want to to dynamically get AWS credentials, you can use AWS STS:
 [STS Documentation](https://botocore.amazonaws.com/v1/documentation/api/latest/reference/services/sts.html)
 
 
+The Web Service expects a Brotli compressed byte stream of a label file and will return a Brotli compressed byte stream of an ISD. 
+
+Any client that interacts with the Web Service will need be able to send and receive Brotli compressed byte streams.
+
+A [Test Client](webservice/tests/test_client.py) can be found in the webservice/tests directory of the GitHub Repository, along with a [README](webservice/tests/README.txt) on how to use it. 
+
+This Test Client can be used to test and debug the Web Service, as well as a reference for creating or adapting any other clients.
+
+
 Configuration for end-user:
 
 * Interact programmatically with the REST API to access endpoints
