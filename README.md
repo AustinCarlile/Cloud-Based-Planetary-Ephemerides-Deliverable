@@ -180,6 +180,11 @@ Error deploying CloudFormation file:
 * Check the error given during the CloudFormation deployment in the AWS console. Make sure that the user has permissions required.
 
 Web Service Segmentation fault:
+
+* Make sure that you have downloaded the base ISIS data:
+```
+downloadIsisData base $ISISDATA
+```
   
 * Make sure that you have downloaded the mission data for any mission label file you send the Web Service.
   
