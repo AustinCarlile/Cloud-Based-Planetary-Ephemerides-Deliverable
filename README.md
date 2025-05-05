@@ -149,6 +149,8 @@ The Web Service automatically generates a print.prt log file that chronicles all
 
 The Web Service will also automatically create a “temp.json” file when generating an ISD, this is overwritten each time and will not grow in size. The user may want to automatically remove this file if they do not want to have it in memory at all times.
 
+The isd_generate function inside the Web Service uses the “-v” verbose flag, which will print all ISD generation operations to the Web Services’ console. If you would like to keep the Web Service as lightweight as possible, consider removing this flag.
+
 
 ## Troubleshooting
 
@@ -184,3 +186,12 @@ downloadIsisData viking1 $ISISDATA
 downloadIsisData all $ISISDATA
 ```
 _NOTE: A segmentation fault will happen if you add “web=true” to the spiceinit command in isdAPI.py_
+
+Brotli decompress failure:
+
+* Check whether this error is coming from the Web Service or the client.
+
+* If from the Web Service, the client is likely sending an incorrect byte stream.
+
+* If from the Client, the Web Service is likely returning a non-ISD HTTP response, which will not be Brotli compressed. This is either due to an ISD generation failure or an incorrect cache retrieval or sending of an ISD.
+
