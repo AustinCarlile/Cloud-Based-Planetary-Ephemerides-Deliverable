@@ -1,16 +1,16 @@
 # Cloud-Based Planetary Ephemerides Manual
 
-[Environment Setup](#To-set-up-the-necessary-environment-for-operation-of-the-Web-Service:)
+[Environment Setup](#to-set-up-the-necessary-environment-for-operation-of-the-web-service:)
 
-[AWS Account Setup](#To-set-up-your-Amazon-AWS-account-for-deploying-the-DynamoDB-instance:)
+[AWS Account Setup](#to-set-up-your-Amazon-AWS-account-for-deploying-the-dynamodb-instance:)
 
-[Web Service Setup](#To-set-up-the-Web-Service:)
+[Web Service Setup](#to-set-up-the-web-service:)
 
-[Configuration and Daily Operation](#Configuration-and-Daily-Operation)
+[Configuration and Daily Operation](#configuration-and-daily-operation)
 
-[Maintenance](#Maintenance)
+[Maintenance](#maintenance)
 
-[Troubleshooting](#Troubleshooting)
+[Troubleshooting](#troubleshooting)
 
 ## Installation
 
