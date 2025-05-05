@@ -12,12 +12,13 @@ import sys
 
 app = FastAPI()
 
-# set AWS access parameters from environmental variables
+# Set AWS access parameters from environmental variables
 aws_access_key_id = os.environ.get('AWS_ACCESS_KEY_ID')
 aws_secret_access_key = os.environ.get('AWS_SECRET_ACCESS_KEY')
-region_name = os.environ.get('AWS_REGION', 'us-east-1')  # Default to 'us-east-2' if not set
+region_name = os.environ.get('AWS_REGION', 'us-west-2')  # Default to 'us-west-2' if not set
 
 # Initialize DynamoDB client
+# This allows us to get the list of DynamoDB tables
 client = boto3.client(
     'dynamodb',
     aws_access_key_id=aws_access_key_id,
@@ -25,7 +26,8 @@ client = boto3.client(
     region_name=region_name
 )
 
-# Initialize DynamoDB client
+# Initialize DynamoDB resource
+# This allows us to interact with a specific DynamoDB table
 dynamodb = boto3.resource(
     'dynamodb',
     aws_access_key_id = aws_access_key_id,
@@ -33,7 +35,7 @@ dynamodb = boto3.resource(
     region_name=region_name
 )
 
-# Get DynamoDB table name from client
+# Get DynamoDB table name from client, returns first table
 response = client.list_tables()
 table_name = response['TableNames'][0]
 
@@ -45,46 +47,46 @@ class Item(BaseModel):
     ID: str
     Isd: str
 
-# adapted from Microsoft Copilot generated code
-# recursive function to parse string number values from isd dictionary into integers or floats
+# Adapted from Microsoft Copilot generated code
+# Recursive function to parse string number values from isd dictionary into integers or floats
 def parse_number_string(isd_dict):
     
-    # if dictionary, search through each value in every key
+    # If dictionary, search through each value in every key
     if isinstance(isd_dict, dict):
         return {key: parse_number_string(value) for key, value in isd_dict.items()}
         
-    # if list, search through every item
+    # If list, search through every item
     elif isinstance(isd_dict, list):
         return [parse_number_string(item) for item in isd_dict]
     
-    # if string, parse it
+    # If string, parse it
     elif isinstance(isd_dict, str):
         
         # Try to convert string to integer
         try:
             return int(isd_dict)
         except ValueError: 
-            try:                              # if error, try to conver to float
+            try:                              # If error, try to conver to float
                 return float(isd_dict)
-            except ValueError:                # if error, return original string
+            except ValueError:                # If error, return original string
                 return isd_dict
 
-# end of adapted code
+# End of adapted code
         
 # Create a mini label string from a label file
 def create_mini_label(input_file):
     
-    # opening label file
+    # Opening label file
     with open(input_file, 'r') as label_file:
         label_dict = pvl.load(label_file)
 
-    # populate miniLabelDict with acceptable groups
+    # Populate miniLabelDict with acceptable groups
     mini_label_dict = {key:label_dict['IsisCube'][key] for key in ['Core', 'Instrument', 'BandBin', 'Kernels']}
 
-    #  Add Label object to miniLabelDict
+    # Add Label object to mini label dictionary
     mini_label_dict['Label'] = label_dict['Label']
 
-    # convert mini label dictionary to string
+    # Convert mini label dictionary to string
     mini_label_string = str(mini_label_dict)
 
     return mini_label_string
@@ -92,55 +94,55 @@ def create_mini_label(input_file):
 # Create a hash from a mini label string 
 def create_hash(mini_label_string):
 
-    # creating hash of encoded MiniLabel string
-    hashData = hashlib.sha256(mini_label_string.encode())
+    # Creating hash of encoded MiniLabel string
+    hash_data = hashlib.sha256(mini_label_string.encode())
 
-    # creating hexidecimal version of hash
-    hashHex = hashData.hexdigest()
+    # Creating hexidecimal version of hash
+    hash_hex = hash_data.hexdigest()
 
-    # return hexidecimal hash
-    return hashHex
-    
+    return hash_hex
+   
+# API Endpoint for sending label file and receiving isd back
 @app.post("/getIsd")
 async def get_isd(request: Request):
     
-    # get request from client, then decompress and decode it
+    # Get request from client, then decompress and decode it
     label = await request.body()
     label_uncompress = brotli.decompress(label)
     label_string = label_uncompress.decode()
     
     temp_file = 'temp.lbl'
     
-    # write label string to file to use for isd generation
+    # Write label string to file to use for isd generation
     with open(temp_file, 'w') as label_file:
         label_file.write(label_string)
     
-    # set spiceinit variable
+    # Set spiceinit variable
     spiceinit_cmd = f'spiceinit from={temp_file}'
     os.system (spiceinit_cmd)
     
-    # create a mini label and hash from label file
+    # Create a mini label and hash from label file
     mini_label = create_mini_label(temp_file)
     isd_hash = create_hash(mini_label)
     
-    # check if isd exists by searching database with hash
+    # Check if isd exists by searching database with hash
     serverResponse = table.get_item(
             Key = {
                 'id': isd_hash
             }
         )
     
-    # if serverResponse dictionary only has one item (a metadata item) that means no isd returned, generate isd
+    # If serverResponse dictionary only has one item (a metadata item) that means no isd returned, generate isd
     if(len(serverResponse) == 1):
         
-        # generate an isd from label file
+        # Generate an isd from label file
         requested_isd = os.system(f'isd_generate {temp_file} -v')
 
-        # reads isd file as dictionary
+        # Reads isd file as dictionary
         with open('temp.json', 'r') as isd_file:
             isd_dict = json.load(isd_file, parse_int = str, parse_float = str)
             
-        # sends item with hash id and isd value to table, then saves response
+        # Sends item with hash id and isd value to table, then saves response
         table.put_item(
             Item = {
                 'id': isd_hash,
@@ -148,32 +150,33 @@ async def get_isd(request: Request):
             }
         )
 
-        # get isd back from server
+        # Get isd back from server
         serverResponse = table.get_item(
             Key = {
                 'id': isd_hash
             }
         )
         
+    # Remove temporary label file
     os.remove(temp_file)
     
-    # remove server response metadata, return isd key values only
+    # Remove server response metadata, return isd key values only
     output_dict = {key:serverResponse['Item'][key] for key in ['isd']}
     
-    # remove isd key, only have inner values
+    # Remove isd key, only have inner values
     output_dict = output_dict['isd']
     
-    # parse string values in isd dictionary and convert into int or float when applicable
+    # Parse string values in isd dictionary and convert into int or float when applicable
     output_dict = parse_number_string(output_dict)
     
-    # load output_dict as a json string
+    # Load output_dict as a json string
     output_string = json.dumps(output_dict)
     
-    # encode and compress isd json string
+    # Encode and compress isd json string
     output_encode = output_string.encode()
     output_compress = brotli.compress(output_encode)
     
-    # send isd back to client
+    # Send isd back to client
     return Response(content = output_compress, media_type = "application/octet-stream")
 
 # Run the app with: uvicorn isdAPI:app --reload
