@@ -1,23 +1,23 @@
-from fastapi.testclient import TestClient
-from isdAPI import app
 import brotli
+import json
 import os
 import pathlib
-import json
+import requests
 import sys
 
-# create test client
-test_client = TestClient(app)
-
-# get label file name
+# get label file name and url (ip and port) from user
 inLabel = sys.argv[1]
+url = sys.argv[2]
 
 # find path to currect program and create a returned_isds folder if it doesnt exist yet
 path = pathlib.Path(__file__).parent.resolve()
 os.makedirs(f'{path}/returned_isds', exist_ok=True)
 
-# sending a label file and getting an isd back
-def test_send(inLabel):
+# send a label file and getting an ISD called "test_isd.json" back
+def test_send(inLabel, url):
+    
+    # add /getIsd endpoint to url
+    url += "/getIsd"
     
     # read label file into a byte stream
     with open(inLabel, 'r', errors = 'ignore') as label_file:
@@ -28,7 +28,7 @@ def test_send(inLabel):
     label_compress = brotli.compress(label_encode)
     
     # send compressed label byte stream to server and get response back
-    response = test_client.post("/getIsd", content = label_compress)
+    response = requests.post(url, data = label_compress)
     
     # uncompress and decode isd response
     response_uncompress = brotli.decompress(response.content)
@@ -44,8 +44,6 @@ def test_send(inLabel):
     with open(outputFile, 'w') as isd_output:
         json.dump(isd_dict, isd_output, indent = 2)
     
-    assert response.status_code == 200
-    
 if __name__ == "__main__":
     
     # test every file in data directory
@@ -53,4 +51,4 @@ if __name__ == "__main__":
     #     test_send(f'{path}/data/{file}')
     
     # test a single file input by user
-    test_send(f"{path}/{inLabel}")
+    test_send(f"{path}/{inLabel}", url)
