@@ -144,7 +144,9 @@ Workflow for end-user:
 
 
 ## Maintenance
+
 The Web Service automatically generates a print.prt log file that chronicles all ISD generation actions that have taken place. Periodically, the user may want to erase or delete this file to prevent its size from growing too large.
+
 The Web Service will also automatically create a “temp.json” file when generating an ISD, this is overwritten each time and will not grow in size. The user may want to automatically remove this file if they do not want to have it in memory at all times.
 
 
