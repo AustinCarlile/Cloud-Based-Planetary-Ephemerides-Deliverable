@@ -54,7 +54,7 @@ conda install requests
 
 ### To set up your Amazon AWS account for deploying the DynamoDB instance:
 
-1. [Set up an AWS Account](https://docs.aws.amazon.com/accounts/latest/reference/manage-acct-creating.html):
+1. [Set up an AWS Account](https://docs.aws.amazon.com/accounts/latest/reference/manage-acct-creating.html)
 
 2. [Set up an IAM User account](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html)
 
@@ -62,9 +62,9 @@ conda install requests
 
 4. Give IAM User AmazonDynamoDBFullAccess permissions:
 
-https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage-attach-detach.html
+[Permissions instructions](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage-attach-detach.html)
 
-https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonDynamoDBFullAccess.html
+[AmazonDynamoDBFullAccess Docs](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonDynamoDBFullAccess.html)
 
 
 5. [Deploy DynamoDB CloudFormation stack](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-create-stack.html)
