@@ -69,8 +69,8 @@ https://docs.aws.amazon.com/keyspaces/latest/devguide/create.keypair.html
 
 4. Give IAM User AmazonDynamoDBFullAccess permissions:
 
-https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage-attach-detach.html
-\
+https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage-attach-detach.html\
+
 https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonDynamoDBFullAccess.html
 
 
