@@ -1,12 +1,26 @@
 # Cloud-Based Planetary Ephemerides Manual
 
+[Environment Setup](#To-set-up-the-necessary-environment-for-operation-of-the-Web-Service:)
+
+[AWS Account Setup](#To-set-up-your-Amazon-AWS-account-for-deploying-the-DynamoDB-instance:)
+
+[Web Service Setup](#To-set-up-the-Web-Service:)
+
+[Configuration and Daily Operation](#Configuration-and-Daily-Operation)
+
+[Maintenance](#Maintenance)
+
+[Troubleshooting](#Troubleshooting)
+
 ## Installation
 
-Install Miniforge, instructions can be found out:
+### To set up the necessary environment for operation of the Web Service:
+
+1. Install Miniforge, instructions can be found out:
 
 https://github.com/conda-forge/miniforge
 
-Install ISIS and set environment variables, instructions can be found out:
+2. Install ISIS and set environment variables, instructions can be found out:
 
 https://astrogeology.usgs.gov/docs/how-to-guides/environment-setup-and-maintenance/installing-isis-via-anaconda/
 
@@ -21,50 +35,50 @@ Or for all missions:
 downloadIsisData all $ISISDATA
 ```
 
-Navigate to a directory for the Web Service and clone github repo:
+3. Navigate to a directory for the Web Service and clone github repo:
 ```
 sudo apt install git && git clone https://github.com/AustinCarlile/Cloud-Based-Planetary-Ephemerides-Deliverable.git
 ```
 
-Install Python-pip and necessary dependencies:
+4. Install Python-pip and necessary dependencies:
 ```
 conda install fastapi && conda install boto3 && conda install brotli && conda install pvl && conda install uvicorn && pip install mkl && conda install requests
 ```
 
 ### To set up your Amazon AWS account for deploying the DynamoDB instance:
-Set up a AWS Account:
+1. Set up a AWS Account:
 
 https://docs.aws.amazon.com/accounts/latest/reference/manage-acct-creating.html
 
-Set up an IAM User account:
+2. Set up an IAM User account:
 
 https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html
 
-Create IAM User Access Key:
+3. Create IAM User Access Key:
 
 https://docs.aws.amazon.com/keyspaces/latest/devguide/create.keypair.html
 
-Give IAM User AmazonDynamoDBFullAccess permissions:
+4. Give IAM User AmazonDynamoDBFullAccess permissions:
 
 https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage-attach-detach.html
 
 https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonDynamoDBFullAccess.html
 
-Deploy DynamoDB CloudFormation stack:
+5. Deploy DynamoDB CloudFormation stack:
 
 https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-create-stack.html
 
-The DynamoDB CloudFormation file (dynamo.yml) is found in the cloudformation directory of the GitHub repository.
+6. The DynamoDB CloudFormation file (dynamo.yml) is found in the cloudformation directory of the GitHub repository.
 
 ### To set up the Web Service:
-Set your IAM User access keys and region to environment variables in your .bashrc:
+1. Set your IAM User access keys and region to environment variables in your .bashrc:
 ```
 AWS_ACCESS_KEY_ID=”IAM USER ACCESS KEY”; export AWS_ACCESS_KEY_ID
 AWS_SECRET_ACCESS_KEY=”IAM USER SECRET ACCESS KEY”; export AWS_SECRET_ACCESS_KEY
 AWS_REGION=”AWS REGION RESOURCE IS HOSTED IN”; export AWS_REGION
 ```
 
-After setting environment variables in .bashrc, run: 
+2. After setting environment variables in .bashrc, run: 
 ```
 exec bash
 ```
@@ -73,7 +87,7 @@ then:
 mamba activate isis
 ```
 
-Run uvicorn command to start Web Service:
+3. Run uvicorn command to start Web Service:
 ```
 uvicorn isdAPI:app --reload
 ```
