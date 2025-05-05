@@ -62,14 +62,14 @@ conda install requests
 
 4. Give IAM User AmazonDynamoDBFullAccess permissions:
 
-[Permissions instructions](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage-attach-detach.html)
+  [Permissions instructions](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_manage-attach-detach.html)
 
-[AmazonDynamoDBFullAccess Documentation](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonDynamoDBFullAccess.html)
+  [AmazonDynamoDBFullAccess Documentation](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonDynamoDBFullAccess.html)
 
 
 5. [Deploy DynamoDB CloudFormation stack](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-create-stack.html)
 
-The [DynamoDB CloudFormation file](cloudformation/dynamo.yml) is found in the cloudformation directory of the GitHub repository.
+  The [DynamoDB CloudFormation file](cloudformation/dynamo.yml) is found in the cloudformation directory of the GitHub repository.
 
 
 ### To set up the Web Service:
@@ -117,9 +117,9 @@ aws_region=AWS REGION RESOURCE IS HOSTED IN
 
 If you want to to dynamically get AWS credentials, you can use AWS STS:
 
-[STS Examples](https://docs.aws.amazon.com/code-library/latest/ug/python_3_sts_code_examples.html)
+  [STS Examples](https://docs.aws.amazon.com/code-library/latest/ug/python_3_sts_code_examples.html)
 
-[STS Documentation](https://botocore.amazonaws.com/v1/documentation/api/latest/reference/services/sts.html)
+  [STS Documentation](https://botocore.amazonaws.com/v1/documentation/api/latest/reference/services/sts.html)
 
 
 Configuration for end-user:
