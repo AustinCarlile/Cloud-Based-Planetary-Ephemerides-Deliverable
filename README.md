@@ -20,7 +20,13 @@
 1. [Install Miniforge](https://github.com/conda-forge/miniforge)
 
 
-2. [Install ISIS](https://astrogeology.usgs.gov/docs/how-to-guides/environment-setup-and-maintenance/installing-isis-via-anaconda/) and set environment variables:
+2. [Install ISIS](https://astrogeology.usgs.gov/docs/how-to-guides/environment-setup-and-maintenance/installing-isis-via-anaconda/)
+   
+_NOTE: Make sure to install base ISIS data._
+
+```
+downloadIsisData base $ISISDATA
+```
 
 _NOTE: Make sure to install ISIS data for any missions you are using label files from._
 
