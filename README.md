@@ -153,16 +153,26 @@ The Web Service will also automatically create a “temp.json” file when gener
 The following are a list of possible issues you may encounter when deploying and running the Web Service and DynamoDB instance, as well as their potential solutions.
 
 
-* Improper File Format:
-  Ensure the label file being submitted is formatted correctly
-* Improper installation of ISIS:
-  A lack of drivers or sufficient ISIS data will result in failures during ISD generation
-* Incorrect Environment:
-  Make sure directories and paths are correct when attempting to generate an ISD\
-* Error deploying CloudFormation file:
-  Check the error given during the CloudFormation deployment in the AWS console. Make sure that the user has permissions required.
-* Web Service Segmentation fault:
-  Make sure that you have downloaded the mission data for any mission label file you send the Web Service. 
+Improper File Format:
+  
+* Ensure the label file being submitted is formatted correctly
+  
+Improper installation of ISIS:
+
+* A lack of drivers or sufficient ISIS data will result in failures during ISD generation
+  
+Incorrect Environment:
+  
+* Make sure directories and paths are correct when attempting to generate an ISD
+  
+Error deploying CloudFormation file:
+  
+* Check the error given during the CloudFormation deployment in the AWS console. Make sure that the user has permissions required.
+
+Web Service Segmentation fault:
+  
+* Make sure that you have downloaded the mission data for any mission label file you send the Web Service.
+  
 * For example, if you are going to use viking1 label files, run: 
 ```
 downloadIsisData viking1 $ISISDATA
