@@ -28,7 +28,7 @@ _NOTE: Make sure to install base ISIS data._
 downloadIsisData base $ISISDATA
 ```
 
-_NOTE: Make sure to install ISIS data for any missions you are using label files from._
+_NOTE: Make sure to also install ISIS data for any missions you are using label files from._
 
 For example, if you are going to use viking1 label files, run: 
 ```
