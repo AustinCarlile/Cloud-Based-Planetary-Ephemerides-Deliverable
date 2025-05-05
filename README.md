@@ -6,7 +6,7 @@
 
 [Web Service Setup](#to-set-up-the-web-service)
 
-[Configuration and Daily Operation](##configuration-and-daily-operation)
+[Configuration and Daily Operation](#configuration-and-daily-operation)
 
 [Maintenance](#maintenance)
 
