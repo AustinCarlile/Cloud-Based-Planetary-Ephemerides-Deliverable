@@ -6,13 +6,13 @@ Resources:
     Properties:
       RequiresCompatibilities:
         - EC2
-      ExecutionRoleArn: 'arn:aws:iam::582489738755:role/TaskExecutionRole'        # Replace with your own TaskExecutionRole
+      ExecutionRoleArn: 'arn:aws:iam::ACCOUNT_NUM:role/TaskExecutionRole'        # Replace with your own TaskExecutionRole
       Cpu: 4096
       Memory: 8192
       NetworkMode: awsvpc
       ContainerDefinitions:
         - Name: webservice_container
-          Image: acarlile0697/isdwebservice:latest        # Replace with your own Web Service Docker Image
+          Image: example/webservice:latest        # Replace with your own Web Service Docker Image
           PortMappings:
             - ContainerPort: 80
           Environment:
@@ -29,7 +29,7 @@ Resources:
   WebServiceSecurityGroup:
     Type: 'AWS::EC2::SecurityGroup'
     Properties:
-      VpcId: vpc-0e788e7d2a69d8709        # Replace with your own VPC ID
+      VpcId: vpc-0e788e72a69d870         # Replace with your own VPC ID
       GroupDescription: SG for the Fargate ALB
       GroupName: webservice-LBSG
       SecurityGroupIngress:
@@ -48,7 +48,7 @@ Resources:
     Properties:
       GroupName: container_sg
       GroupDescription: Security group for NGINX container
-      VpcId: vpc-0e788e7d2a69d8709        # Replace with your own VPC ID
+      VpcId: vpc-0e788e72a69d870         # Replace with your own VPC ID
       SecurityGroupIngress:
         - IpProtocol: -1
           SourceSecurityGroupId: !GetAtt WebServiceSecurityGroup.GroupId
@@ -71,7 +71,7 @@ Resources:
           SecurityGroups:
             - !GetAtt ContainerSecurityGroup.GroupId
           Subnets:
-            - subnet-0ec27bbcaf26e268e        # Replace with your own Subnet
+            - subnet-0ec27bpcf26e268         # Replace with your own Subnet
   DynamoDB:
     Type: AWS::DynamoDB::Table
     Properties:
