@@ -86,9 +86,9 @@ AWS_ACCESS_KEY_ID=”IAM USER ACCESS KEY”; export AWS_ACCESS_KEY_ID
 AWS_SECRET_ACCESS_KEY=”IAM USER SECRET ACCESS KEY”; export AWS_SECRET_ACCESS_KEY
 AWS_REGION=”AWS REGION RESOURCE IS HOSTED IN”; export AWS_REGION
 ```
-# **WARNING: DO NOT UPLOAD A DOCKER IMAGE TO A PUBLIC REGISTRY WITH YOUR ACCESS KEYS AS ENVIRONMENT VARIABLES**
+### **WARNING: DO NOT UPLOAD A DOCKER IMAGE TO A PUBLIC REGISTRY WITH YOUR ACCESS KEYS AS ENVIRONMENT VARIABLES**
 
-For possible strategies to deal with this, refer to the [STS information](#sts-information) in the Troubleshooting section.
+For possible strategies to deal with this, refer to the [STS information](#sts-information) in the Configuration and Daily Operation section.
 
 2. After setting environment variables in .bashrc, run: 
 ```
@@ -122,7 +122,7 @@ aws_secret_access_key=IAM USER SECRET ACCESS KEY
 aws_region=AWS REGION RESOURCE IS HOSTED IN
 ```
 
-<a a="sts-information"></a>
+<a name="sts-information"></a>
 If you want to to dynamically get AWS credentials, you can use AWS STS:
 
 [STS Examples](https://docs.aws.amazon.com/code-library/latest/ug/python_3_sts_code_examples.html)
